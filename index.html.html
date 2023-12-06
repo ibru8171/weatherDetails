@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        /* Apply background image to the body */
+        body {
+            background-image: url("https://www.survivingwithandroid.com/wp-content/uploads/2016/01/weather-min-1024x531.jpg");
+            background-size: cover;
+        }
+        .card {
+            border: 10px inset green;
+            padding: 40px;
+            width: 300px;           
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h1 class="mt-5 text-center text-light" style="font-family: serif;">WEATHER DATA</h1>
+                <div class="d-flex mt-5">
+                    <input type="text" class="form-control" placeholder="Enter the city" id="city">
+                    <button type="button" class="btn btn-success ms-3" onclick="weatherDetails()">Search</button>
+                </div>
+                <!-- Weather card container -->
+                <div id="weathercard" class="mt-5 text-center" style="display: flex;justify-content: center;">
+
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title" id="cityName"></h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Country: <span id="country"></strong></span></li>
+                            <li class="list-group-item"><strong>Temperature in °C: <span
+                                        id="temperature"></strong></span></li>
+                            <li class="list-group-item"><strong>Min Temperature: <span
+                                        id="minTemperature"></strong></span></li>
+                            <li class="list-group-item"><strong>Max Temperature: <span
+                                        id="maxTemperature"></strong></span></li>
+                            <li class="list-group-item"><strong>Humidity: <span id="humidity"></strong></span></li>
+                            <li class="list-group-item"><strong>Pressure: <span id="pressure"></strong></span></li>
+                            <li class="list-group-item"><strong>Wind Speed: <span id="windSpeed"></strong></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+    <script>
+        function weatherDetails() {
+            var cityName = document.getElementById("city").value;
+            var weathercard = document.getElementById("weathercard");
+            var cityNameElement = document.getElementById("cityName");
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=8e21e00b9bc53215038bd9c1741b2a65`)
+                .then((response) => {
+                    response.json().then((weather) => {
+                        cityNameElement.textContent = weather.name;
+                        document.getElementById("country").textContent = weather.sys.country;
+                        document.getElementById("temperature").textContent = weather.main.temp;
+                        document.getElementById("minTemperature").textContent = weather.main.temp_min;
+                        document.getElementById("maxTemperature").textContent = weather.main.temp_max;
+                        document.getElementById("humidity").textContent = weather.main.humidity;
+                        document.getElementById("pressure").textContent = weather.main.pressure;
+                        document.getElementById("windSpeed").textContent = weather.wind.speed;
+                    });
+                });
+        }
+    </script>
+</body>
+
+</html>
